@@ -5,7 +5,7 @@ A comprehensive **Student Mentorship Platform** SaaS application built with the 
 ![MentorMe](https://img.shields.io/badge/MentorMe-Platform-blue?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Postgre](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
 ## 🌟 Features
@@ -53,10 +53,8 @@ A comprehensive **Student Mentorship Platform** SaaS application built with the 
 - **Node.js** - Runtime
 - **Express.js** - Web framework
 - **TypeScript** - Type safety
-- **MongoDB** - Database
-- **Mongoose** - ODM
+- **Postgre SQL** - Database
 - **JWT** - Authentication
-- **Socket.io** - Real-time
 - **bcryptjs** - Password hashing
 - **Express Validator** - Validation
 - **Nodemailer** - Emails
@@ -114,7 +112,7 @@ MentorMe Platform/
 ### Prerequisites
 
 - Node.js 18+
-- MongoDB (local or Atlas)
+- PostgreSQL
 - npm or yarn
 
 ### Installation
