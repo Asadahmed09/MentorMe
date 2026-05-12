@@ -13,6 +13,8 @@ import {
   XMarkIcon,
   EnvelopeIcon,
   PhoneIcon,
+  GlobeAltIcon,
+  LinkIcon,
 } from "@heroicons/react/24/outline";
 import { cn } from "../../utils/helpers";
 
@@ -224,6 +226,73 @@ export default function SessionsPage() {
                     </div>
                   </div>
                 )}
+
+                {selectedRequest?.contact_visibility !== "none" &&
+                  selectedRequest?.mentor_whatsapp && (
+                    <div className="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                      <PhoneIcon className="w-5 h-5 mt-0.5 text-primary-600" />
+                      <div>
+                        <p className="text-sm text-gray-500">WhatsApp</p>
+                        <p className="font-medium text-gray-900">
+                          {selectedRequest.mentor_whatsapp}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                {selectedRequest?.contact_visibility !== "none" &&
+                  selectedRequest?.mentor_linkedin && (
+                    <div className="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                      <LinkIcon className="w-5 h-5 mt-0.5 text-primary-600" />
+                      <div>
+                        <p className="text-sm text-gray-500">LinkedIn</p>
+                        <a
+                          href={selectedRequest.mentor_linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-medium text-primary-600 hover:underline break-all"
+                        >
+                          {selectedRequest.mentor_linkedin}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                {selectedRequest?.contact_visibility !== "none" &&
+                  selectedRequest?.mentor_github && (
+                    <div className="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                      <LinkIcon className="w-5 h-5 mt-0.5 text-primary-600" />
+                      <div>
+                        <p className="text-sm text-gray-500">GitHub</p>
+                        <a
+                          href={selectedRequest.mentor_github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-medium text-primary-600 hover:underline break-all"
+                        >
+                          {selectedRequest.mentor_github}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                {selectedRequest?.contact_visibility !== "none" &&
+                  selectedRequest?.mentor_website && (
+                    <div className="flex items-start gap-3 rounded-xl bg-gray-50 p-4">
+                      <GlobeAltIcon className="w-5 h-5 mt-0.5 text-primary-600" />
+                      <div>
+                        <p className="text-sm text-gray-500">Website</p>
+                        <a
+                          href={selectedRequest.mentor_website}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-medium text-primary-600 hover:underline break-all"
+                        >
+                          {selectedRequest.mentor_website}
+                        </a>
+                      </div>
+                    </div>
+                  )}
 
                 {!selectedRequest?.show_email &&
                   !selectedRequest?.show_phone && (

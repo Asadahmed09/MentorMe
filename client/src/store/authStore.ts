@@ -15,6 +15,7 @@ interface AuthState {
   logout: () => void;
   checkAuth: () => Promise<void>;
   updateUser: (user: Partial<User>) => void;
+  updateProfile: (profile: Partial<User>) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -117,6 +118,19 @@ export const useAuthStore = create<AuthState>()(
       updateUser: (userData) => {
         const current = get().user;
         if (current) set({ user: { ...current, ...userData } });
+      },
+
+      updateProfile: async (profile) => {
+        const current = get().user;
+        if (!current) {
+          throw new Error("Not authenticated");
+        }
+
+        const data = await authAPI.updateMe(profile);
+        set({
+          user: data.user,
+          mentorProfile: data.mentorProfile ?? null,
+        });
       },
     }),
     {

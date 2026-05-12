@@ -49,7 +49,7 @@ export default function DashboardPage() {
       {/* Welcome */}
       <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-2xl p-6 text-white">
         <h1 className="text-2xl sm:text-3xl font-bold">
-          Welcome back, {user?.name}! 👋
+          Welcome back, {user?.name}!
         </h1>
         <p className="mt-2 text-white/80">
           {user?.role === "mentor"

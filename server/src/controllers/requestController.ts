@@ -45,7 +45,11 @@ export const getMyRequestsAsStudent = async (req: any, res: Response) => {
         mr.id, mr.mentor_id, mr.message, mr.status, mr.created_at, mr.updated_at,
         u.name as mentor_name, u.email as mentor_email, u.profile_image as mentor_image,
         s.name as subject_name,
-        mp.phone as mentor_phone,
+        COALESCE(mp.phone, u.phone) as mentor_phone,
+        u.whatsapp_number as mentor_whatsapp,
+        u.linkedin_url as mentor_linkedin,
+        u.github_url as mentor_github,
+        u.website_url as mentor_website,
         mp.show_email, mp.show_phone, mp.contact_visibility
        FROM mentorship_requests mr
        JOIN mentor_profiles mp ON mr.mentor_id = mp.id

@@ -6,6 +6,11 @@ export interface User {
   mentorStatus?: "pending" | "approved" | "rejected" | null;
   univeristy: string;
   profile_image?: string;
+  phone?: string;
+  whatsapp_number?: string;
+  linkedin_url?: string;
+  github_url?: string;
+  website_url?: string;
   created_at: string;
 }
 
@@ -66,6 +71,10 @@ export interface MentorshipRequest {
   mentor_email?: string;
   mentor_image?: string;
   mentor_phone?: string;
+  mentor_whatsapp?: string;
+  mentor_linkedin?: string;
+  mentor_github?: string;
+  mentor_website?: string;
   show_email?: boolean;
   show_phone?: boolean;
   contact_visibility?: "public" | "accepted_only" | "none";

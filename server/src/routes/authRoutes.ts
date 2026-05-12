@@ -4,6 +4,7 @@ import {
   login,
   adminLogin,
   getMe,
+  updateMe,
 } from "../controllers/authController";
 import { authenticate } from "../middleware/auth";
 
@@ -13,5 +14,6 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/admin-login", adminLogin);
 router.get("/me", authenticate, getMe);
+router.put("/me", authenticate, updateMe);
 
 export default router;

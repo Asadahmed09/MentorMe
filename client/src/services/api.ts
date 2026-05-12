@@ -40,6 +40,13 @@ export const authAPI = {
     fetch(`${BASE_URL}/auth/me`, {
       headers: headers(),
     }).then(handleResponse),
+
+  updateMe: (data: any) =>
+    fetch(`${BASE_URL}/auth/me`, {
+      method: "PUT",
+      headers: headers(),
+      body: JSON.stringify(data),
+    }).then(handleResponse),
 };
 
 // ─── Mentors ─────────────────────────────────────────
