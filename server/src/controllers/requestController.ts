@@ -150,26 +150,43 @@ export const updateRequestStatus = async (req: any, res: Response) => {
   }
 };
 
-// POST - Student submits a rating after completed request
+// POST - Student submits a rating after accepted request
 export const submitRating = async (req: any, res: Response) => {
   const { request_id, score, review } = req.body;
   const student_id = req.user.id;
 
+  // Validate score
+  if (!score || score < 1 || score > 5) {
+    return res.status(400).json({ message: "Score must be between 1 and 5" });
+  }
+
   try {
-    // Verify request is completed and belongs to this student
+    // Verify request is accepted and belongs to this student
     const reqCheck = await pool.query(
       `SELECT * FROM mentorship_requests 
-       WHERE id = $1 AND student_id = $2 AND status = 'completed'`,
+       WHERE id = $1 AND student_id = $2 AND status IN ('accepted', 'completed')`,
       [request_id, student_id],
     );
 
     if (reqCheck.rows.length === 0) {
       return res
         .status(400)
-        .json({ message: "Request not found or not completed" });
+        .json({ message: "Request not found or not accepted" });
     }
 
     const mentorshipReq = reqCheck.rows[0];
+
+    // Check if already rated
+    const existing = await pool.query(
+      `SELECT id FROM ratings WHERE request_id = $1`,
+      [request_id],
+    );
+
+    if (existing.rows.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "You have already rated this mentor" });
+    }
 
     // Insert rating
     await pool.query(
@@ -192,6 +209,30 @@ export const submitRating = async (req: any, res: Response) => {
     );
 
     return res.status(201).json({ message: "Rating submitted successfully" });
+  } catch (err: any) {
+    return res
+      .status(500)
+      .json({ message: "Server error", error: err.message });
+  }
+};
+
+// GET - Get ratings for a specific mentor
+export const getMentorRatings = async (req: Request, res: Response) => {
+  const { mentor_id } = req.params;
+
+  try {
+    const result = await pool.query(
+      `SELECT 
+        r.id, r.score, r.review, r.created_at,
+        u.name as student_name, u.profile_image as student_image
+       FROM ratings r
+       JOIN users u ON r.student_id = u.id
+       WHERE r.mentor_id = $1
+       ORDER BY r.created_at DESC`,
+      [mentor_id],
+    );
+
+    return res.status(200).json({ ratings: result.rows });
   } catch (err: any) {
     return res
       .status(500)

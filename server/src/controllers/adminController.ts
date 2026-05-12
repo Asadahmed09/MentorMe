@@ -36,8 +36,7 @@ export const approveMentor = async (req: any, res: Response) => {
       return res.status(404).json({ message: "Not found" });
 
     await pool.query(
-      `UPDATE mentor_profiles SET status='approved', is_verified=true,
-       verified_at=NOW(), verified_by=$1, verification_notes=$2 WHERE id=$3`,
+      `UPDATE mentor_profiles SET status='approved', verified_by=$1, verification_notes=$2 WHERE id=$3`,
       [req.user.id, notes || null, id],
     );
     await pool.query(`UPDATE users SET role='mentor' WHERE id=$1`, [

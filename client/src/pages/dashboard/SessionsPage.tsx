@@ -7,6 +7,7 @@ import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import Button from "../../components/ui/Button";
 import Badge from "../../components/ui/Badge";
 import Modal from "../../components/ui/Modal";
+import RatingModal from "../../components/ui/RatingModal";
 import {
   CalendarIcon,
   CheckIcon,
@@ -15,6 +16,7 @@ import {
   PhoneIcon,
   GlobeAltIcon,
   LinkIcon,
+  StarIcon,
 } from "@heroicons/react/24/outline";
 import { cn } from "../../utils/helpers";
 
@@ -43,6 +45,7 @@ export default function SessionsPage() {
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
 
   const { data: studentData, isLoading: loadingStudent } = useQuery({
     queryKey: ["requests-student"],
@@ -66,6 +69,19 @@ export default function SessionsPage() {
       setSelectedRequest(null);
     },
     onError: (err: any) => toast.error(err.message || "Failed to update"),
+  });
+
+  const ratingMutation = useMutation({
+    mutationFn: ({ request_id, score, review }: any) =>
+      requestAPI.submitRating({ request_id, score, review }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["requests-student"] });
+      toast.success("Rating submitted successfully!");
+      setShowRatingModal(false);
+      setSelectedRequest(null);
+    },
+    onError: (err: any) =>
+      toast.error(err.message || "Failed to submit rating"),
   });
 
   const allRequests = isMentor
@@ -143,17 +159,28 @@ export default function SessionsPage() {
                   </p>
 
                   {!isMentor && r.status === "accepted" && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="mt-3"
-                      onClick={() => {
-                        setSelectedRequest(r);
-                        setShowContactModal(true);
-                      }}
-                    >
-                      View Contact
-                    </Button>
+                    <div className="flex gap-2 mt-3 flex-wrap">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setSelectedRequest(r);
+                          setShowContactModal(true);
+                        }}
+                      >
+                        View Contact
+                      </Button>
+                      <Button
+                        size="sm"
+                        leftIcon={<StarIcon className="w-4 h-4" />}
+                        onClick={() => {
+                          setSelectedRequest(r);
+                          setShowRatingModal(true);
+                        }}
+                      >
+                        Rate Mentor
+                      </Button>
+                    </div>
                   )}
                 </div>
                 <Badge variant={statusVariant(r.status)}>{r.status}</Badge>
@@ -348,6 +375,26 @@ export default function SessionsPage() {
             </Button>
           </div>
         </Modal>
+      )}
+
+      {/* Rating Modal */}
+      {!isMentor && (
+        <RatingModal
+          isOpen={showRatingModal}
+          onClose={() => {
+            setShowRatingModal(false);
+            setSelectedRequest(null);
+          }}
+          mentorName={selectedRequest?.mentor_name}
+          isLoading={ratingMutation.isPending}
+          onSubmit={(score, review) => {
+            ratingMutation.mutate({
+              request_id: selectedRequest.id,
+              score,
+              review,
+            });
+          }}
+        />
       )}
     </div>
   );

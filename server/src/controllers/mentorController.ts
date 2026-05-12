@@ -11,7 +11,7 @@ export const getMentors = async (req: AuthRequest, res: Response) => {
       SELECT 
         u.id, u.name, u.email, u.univeristy, u.profile_image,
         mp.id as mentor_profile_id, mp.gpa, mp.bio, mp.experience,
-        mp.average_rating, mp.total_ratings, mp.status,
+        COALESCE(mp.average_rating::float, 0) as average_rating, COALESCE(mp.total_ratings::int, 0) as total_ratings, mp.status,
         mp.show_email, mp.show_phone, mp.contact_visibility,
         ARRAY_REMOVE(ARRAY_AGG(s.name), NULL) as subjects,
         COALESCE(
@@ -27,9 +27,9 @@ export const getMentors = async (req: AuthRequest, res: Response) => {
       WHERE mp.status = 'approved' AND u.id != $1
       GROUP BY u.id, u.name, u.email, u.univeristy, u.profile_image,
                mp.id, mp.gpa, mp.bio, mp.experience,
-               mp.average_rating, mp.total_ratings, mp.status,
+               average_rating, total_ratings, mp.status,
                mp.show_email, mp.show_phone, mp.contact_visibility
-      ORDER BY mp.average_rating DESC
+      ORDER BY average_rating DESC
     `,
       [requesterId],
     );
@@ -51,7 +51,7 @@ export const getMentorById = async (req: Request, res: Response) => {
       SELECT 
         u.id, u.name, u.email, u.univeristy, u.profile_image,
         mp.id as mentor_profile_id, mp.gpa, mp.bio, mp.experience,
-        mp.average_rating, mp.total_ratings, mp.status, mp.phone,
+        COALESCE(mp.average_rating::float, 0) as average_rating, COALESCE(mp.total_ratings::int, 0) as total_ratings, mp.status, mp.phone,
         mp.show_email, mp.show_phone, mp.contact_visibility,
         ARRAY_REMOVE(ARRAY_AGG(s.name), NULL) as subjects,
         COALESCE(
@@ -67,7 +67,7 @@ export const getMentorById = async (req: Request, res: Response) => {
       WHERE u.id = $1 AND mp.status = 'approved'
       GROUP BY u.id, u.name, u.email, u.univeristy, u.profile_image,
                mp.id, mp.gpa, mp.bio, mp.experience,
-               mp.average_rating, mp.total_ratings, mp.status, mp.phone,
+               average_rating, total_ratings, mp.status, mp.phone,
                mp.show_email, mp.show_phone, mp.contact_visibility
     `,
       [id],

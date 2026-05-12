@@ -68,40 +68,40 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const adminLogin = async (req: Request, res: Response) => {
-  const { admin_id, password } = req.body;
-  try {
+// export const adminLogin = async (req: Request, res: Response) => {
+//   const { admin_id, password } = req.body;
+//   try {
     // Admin credentials - in production, these should be more secure
-    const adminUser = {
-      id: 1,
-      name: "Admin",
-      email: "admin@mentorme.com",
-      role: "admin",
-      univeristy: "Admin Panel",
-    };
+    // const adminUser = {
+    //   id: 1,
+    //   name: "Admin",
+    //   email: "admin@mentorme.com",
+    //   role: "admin",
+    //   univeristy: "Admin Panel",
+    // };
 
     // Simple admin ID and password check (in production, use a proper admin table)
-    if (admin_id !== "admin" || password !== "admin123") {
-      return res.status(400).json({ message: "Invalid admin credentials" });
-    }
+    // if (admin_id !== "admin" || password !== "admin123") {
+    //   return res.status(400).json({ message: "Invalid admin credentials" });
+    // }
 
-    const token = jwt.sign(
-      { id: adminUser.id, role: adminUser.role },
-      process.env.JWT_SECRET!,
-      { expiresIn: "7d" },
-    );
+//     const token = jwt.sign(
+//       { id: adminUser.id, role: adminUser.role },
+//       process.env.JWT_SECRET!,
+//       { expiresIn: "7d" },
+//     );
 
-    return res.json({
-      token,
-      user: adminUser,
-      mentorProfile: null,
-    });
-  } catch (err: any) {
-    return res
-      .status(500)
-      .json({ message: "Server error", error: err.message });
-  }
-};
+//     return res.json({
+//       token,
+//       user: adminUser,
+//       mentorProfile: null,
+//     });
+//   } catch (err: any) {
+//     return res
+//       .status(500)
+//       .json({ message: "Server error", error: err.message });
+//   }
+// };
 
 export const getMe = async (req: any, res: Response) => {
   try {

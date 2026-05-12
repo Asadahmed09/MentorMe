@@ -123,6 +123,11 @@ export default function MentorsPage() {
                     {mentor.average_rating > 0
                       ? mentor.average_rating.toFixed(1)
                       : "New"}
+                    {mentor.total_ratings > 0 && (
+                      <span className="text-gray-500">
+                        ({mentor.total_ratings})
+                      </span>
+                    )}
                   </span>
                 </div>
 

@@ -7,6 +7,7 @@ import { useAuthStore } from "../../store/authStore";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import Button from "../../components/ui/Button";
 import Modal from "../../components/ui/Modal";
+import ReviewsList from "../../components/ui/ReviewsList";
 import {
   AcademicCapIcon,
   StarIcon,
@@ -42,6 +43,13 @@ export default function MentorDetailPage() {
     (r: any) =>
       r.mentor_id === mentor?.mentor_profile_id && r.status === "pending",
   );
+
+  // Fetch mentor's ratings
+  const { data: ratingsData } = useQuery({
+    queryKey: ["mentor-ratings", id],
+    queryFn: () => requestAPI.getRatings(Number(id)),
+    enabled: !!id,
+  });
 
   const requestMutation = useMutation({
     mutationFn: () =>
@@ -98,6 +106,7 @@ export default function MentorDetailPage() {
   const mentorSubjects = mentor.subject_details?.length
     ? mentor.subject_details
     : allSubjects.filter((s: any) => mentor.subjects?.includes(s.name));
+  const ratings = ratingsData?.ratings || [];
 
   // Check if there's an accepted request with this mentor
   return (
@@ -186,6 +195,18 @@ export default function MentorDetailPage() {
                     </span>
                   ))}
               </div>
+            </div>
+
+            {/* Reviews Section */}
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">
+                Student Reviews
+              </h2>
+              <ReviewsList
+                reviews={ratings}
+                averageRating={mentor.average_rating}
+                totalRatings={mentor.total_ratings}
+              />
             </div>
 
             {/* Action */}

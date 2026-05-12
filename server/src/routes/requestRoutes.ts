@@ -5,11 +5,16 @@ import {
   getMyRequestsAsMentor,
   updateRequestStatus,
   submitRating,
+  getMentorRatings,
 } from "../controllers/requestController";
 import { authenticate, authorizeRole } from "../middleware/auth";
 
 const router = Router();
 
+// Public routes
+router.get("/ratings/:mentor_id", getMentorRatings);
+
+// Protected routes
 router.use(authenticate);
 
 router.post("/", authorizeRole("student"), createRequest);

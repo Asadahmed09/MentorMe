@@ -7,7 +7,7 @@ import authRoutes from "./routes/authRoutes";
 import mentorRoutes from "./routes/mentorRoutes";
 import adminRoutes from "./routes/adminRoutes";
 import requestRoutes from "./routes/requestRoutes";
-import { ensureProfileContactColumns } from "./config/database";
+//import { ensureProfileContactColumns } from "./config/database";
 
 dotenv.config();
 
@@ -34,7 +34,7 @@ app.get("/api/health", (req, res) => {
 
 const startServer = async () => {
   try {
-    await ensureProfileContactColumns();
+    //await ensureProfileContactColumns();
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });

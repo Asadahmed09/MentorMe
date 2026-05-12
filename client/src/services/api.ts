@@ -8,7 +8,22 @@ const headers = () => ({
 });
 
 const handleResponse = async (res: Response) => {
-  const data = await res.json();
+  // Some responses (304 Not Modified, 204 No Content) may have empty bodies.
+  // Attempt to parse JSON only when there's a body, otherwise return an empty object.
+  if (res.status === 304 || res.status === 204) {
+    if (!res.ok) return {}; // treat not-modified/no-content as empty payload
+  }
+
+  let data: any = {};
+  try {
+    // Guard against empty response body which would throw when parsing
+    const text = await res.text();
+    data = text ? JSON.parse(text) : {};
+  } catch (err) {
+    // If parsing fails, return empty object or include raw text
+    data = {};
+  }
+
   if (!res.ok) throw new Error(data.message || "Something went wrong");
   return data;
 };
@@ -120,6 +135,11 @@ export const requestAPI = {
       method: "POST",
       headers: headers(),
       body: JSON.stringify(data),
+    }).then(handleResponse),
+
+  getRatings: (mentor_id: number) =>
+    fetch(`${BASE_URL}/requests/ratings/${mentor_id}`, {
+      headers: headers(),
     }).then(handleResponse),
 };
 
