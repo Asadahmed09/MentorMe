@@ -123,8 +123,8 @@ export const applyAsMentor = async (req: any, res: Response) => {
     }
 
     const mp = await pool.query(
-      `INSERT INTO mentor_profiles (user_id, gpa, bio, experience, phone)
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      `INSERT INTO mentor_profiles (user_id, gpa, bio, experience, phone, status)
+       VALUES ($1, $2, $3, $4, $5, 'pending') RETURNING *`,
       [userId, gpa, bio, experience, phone],
     );
 
