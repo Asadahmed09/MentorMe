@@ -267,20 +267,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-
-      {/* Danger Zone */}
-      <div className="bg-white rounded-2xl shadow-sm p-8 border border-red-200">
-        <h3 className="text-lg font-semibold text-red-600 mb-2">Danger Zone</h3>
-        <p className="text-gray-600 mb-4">
-          Once you delete your account, there is no going back.
-        </p>
-        <Button
-          variant="danger"
-          onClick={() => toast.error("Account deletion disabled in MVP")}
-        >
-          Delete Account
-        </Button>
-      </div>
     </div>
   );
 }

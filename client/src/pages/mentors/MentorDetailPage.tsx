@@ -39,11 +39,6 @@ export default function MentorDetailPage() {
     enabled: user?.role === "student",
   });
 
-  const pendingRequestExists = requestsData?.requests?.some(
-    (r: any) =>
-      r.mentor_id === mentor?.mentor_profile_id && r.status === "pending",
-  );
-
   // Fetch mentor's ratings
   const { data: ratingsData } = useQuery({
     queryKey: ["mentor-ratings", id],
@@ -108,7 +103,11 @@ export default function MentorDetailPage() {
     : allSubjects.filter((s: any) => mentor.subjects?.includes(s.name));
   const ratings = ratingsData?.ratings || [];
 
-  // Check if there's an accepted request with this mentor
+  // Check if there's a pending request with this mentor
+  const pendingRequestExists = requestsData?.requests?.some(
+    (r: any) =>
+      r.mentor_id === mentor.mentor_profile_id && r.status === "pending",
+  );
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
